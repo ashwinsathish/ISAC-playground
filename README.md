@@ -1,4 +1,4 @@
-# 6G ISAC Factory Floor Simulation - Complete Walkthrough
+# 6G ISAC Factory Floor Simulation
 
 A comprehensive simulation of Integrated Sensing and Communication (ISAC) for autonomous factory floor operations using 6G sub-THz wireless technology.
 
