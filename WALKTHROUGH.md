@@ -104,7 +104,7 @@ $$\Delta R = \frac{c}{2B} = \frac{3 \times 10^8}{2 \times 2 \times 10^9} = 7.5 \
 $$R_{max} = \frac{c}{2 \Delta f} = \frac{3 \times 10^8}{2 \times 480 \times 10^3} = 312.5 \text{ m}$$
 
 **Angular Resolution:**
-$$\Delta \theta = \frac{0.886 \lambda}{N_x \cdot d} \approx 0.016° $$
+$$\Delta \theta = \frac{0.886 \lambda}{N_x \cdot d} = \frac{0.886 \times 2.14mm}{64 \times 1.07mm} \approx 1.59°$$
 
 ### Antenna Array
 
