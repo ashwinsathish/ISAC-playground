@@ -133,9 +133,12 @@ def create_scenario_simulation(scenario_name: str) -> Dict:
     isac = ISACSystem()
     localization = LocalizationSystem(num_agvs)
     
-    # Initialize localization with actual positions
+    # Initialize localization with actual positions and reset covariance
+    # This ensures EKF starts with correct position and low uncertainty
     for agv in agv_fleet.agvs:
         localization.trackers[agv.id].state[:2] = agv.position
+        localization.trackers[agv.id].state[2:4] = [0.0, 0.0]  # Zero initial velocity
+        localization.trackers[agv.id].P = np.diag([0.1, 0.1, 0.1, 0.1])  # Low initial uncertainty
         
     decision_maker = DecisionMaker(localization, factory_floor=factory)
     

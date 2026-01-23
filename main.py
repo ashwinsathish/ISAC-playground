@@ -7,13 +7,11 @@ This simulation demonstrates:
 3. Predictive Decision Making: Trajectory prediction and collision avoidance
 
 Usage:
-    python main.py                       # Run interactive simulation
+    python main.py                       # Run interactive simulation (GUI)
     python main.py --duration 60         # Run for 60 seconds
     python main.py --test-mode           # Run verification tests
     python main.py --no-viz              # Run without visualization
-    python main.py --scenario collision  # Run collision test scenario
-    python main.py --scenario deadlock   # Run deadlock test scenario
-    python main.py --list-scenarios      # List all available scenarios
+    python main.py --no-gui              # Run visualization without config panel
 """
 
 import numpy as np
@@ -314,7 +312,6 @@ Examples:
   python main.py --duration 30      # Run for 30 seconds
   python main.py --test-mode        # Run automated tests
   python main.py --no-viz           # Run without visualization
-  python main.py --scenario collision  # Run specific test scenario
         """
     )
     
@@ -326,29 +323,14 @@ Examples:
                        help='Run without visualization')
     parser.add_argument('--no-gui', action='store_true',
                        help='Run without the control panel GUI')
-    parser.add_argument('--scenario', type=str, default=None,
-                       help='Run a specific test scenario (collision, deadlock, threeway, crossing)')
-    parser.add_argument('--list-scenarios', action='store_true',
-                       help='List available test scenarios')
     
     args = parser.parse_args()
     
-    # Handle --list-scenarios
-    if args.list_scenarios:
-        from test_scenarios import list_scenarios
-        list_scenarios()
-        sys.exit(0)
-    
     # Launch GUI mode (default) or traditional mode
-    if not args.no_gui and not args.test_mode and not args.no_viz and not args.scenario:
+    if not args.no_gui and not args.test_mode and not args.no_viz:
         # Launch interactive GUI
         from control_panel import ControlPanel
         run_gui_simulation()
-    elif args.scenario:
-        # Create simulation with scenario
-        from test_scenarios import create_scenario_simulation
-        components = create_scenario_simulation(args.scenario)
-        run_interactive(components, args.duration)
     elif args.test_mode:
         components = create_simulation()
         duration = args.duration or 30.0
@@ -376,9 +358,9 @@ def run_gui_simulation():
     panel = ControlPanel()
     
     def on_start(config):
-        """Handle start button - create and launch simulation in separate window."""
+        """Handle start button - create and launch simulation."""
         print(f"\n[START] Launching simulation with config:")
-        print(f"   Scenario: {config['scenario']}")
+        print(f"   Mode: {config['scenario']}")
         print(f"   AGVs: {config['num_agvs']}")
         print(f"   Duration: {config['duration']}s")
         print(f"   Frequency: {config['frequency']} GHz")
@@ -390,23 +372,16 @@ def run_gui_simulation():
         cfg.NUM_AGVS = config['num_agvs']
         
         # Create simulation based on scenario
-        if config['scenario'] == 'normal':
-            # Create with user's AGV count
-            components = create_simulation_with_agv_count(config['num_agvs'])
-        else:
+        if config['scenario'] == 'collision':
+            # Head-On Collision Test
             from test_scenarios import create_scenario_simulation
-            components = create_scenario_simulation(config['scenario'])
-            # Reinitialize localization with correct AGV count
-            from localization import LocalizationSystem
-            num_agvs = len(components['agv_fleet'].agvs)
-            components['localization'] = LocalizationSystem(num_agvs)
-            components['decision_maker'].localization = components['localization']
+            components = create_scenario_simulation('collision')
+        else:
+            # Normal simulation
+            components = create_simulation_with_agv_count(config['num_agvs'])
         
-        # Run with existing visualization system
+        # Run with visualization
         run_interactive(components, config['duration'])
-    
-    def on_pause(is_paused):
-        print(f"   {'Paused' if is_paused else 'Resumed'}")
     
     def on_stop():
         print("   Stopped")
@@ -414,10 +389,9 @@ def run_gui_simulation():
     
     # Connect callbacks
     panel.on_start = on_start
-    panel.on_pause = on_pause
     panel.on_stop = on_stop
     
-    # Show control panel and wait for user to click PLAY
+    # Show control panel and wait for user to click START
     panel.show()
 
 
