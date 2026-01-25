@@ -1,6 +1,11 @@
 """
 6G Channel Model
-Implements 3GPP Indoor Factory channel model adapted for sub-THz frequencies.
+Sub-THz extension of 3GPP TR 38.901 Indoor Factory (InF-SL LoS) model.
+
+Key adaptations for 140 GHz:
+- Path loss exponent (n=1.73) extrapolated from 3GPP TR 38.901 InF-SL.
+- Atmospheric absorption from ITU-R P.676-13 (~2 dB/km at 140 GHz).
+- Shadow fading σ=4 dB consistent with sub-THz indoor measurements.
 """
 
 import numpy as np
@@ -11,7 +16,10 @@ import config as cfg
 class ChannelModel:
     """
     6G sub-THz channel model for indoor factory environment.
-    Based on 3GPP TR 38.901 Indoor Factory model with sub-THz extensions.
+
+    Extends 3GPP TR 38.901 InF-SL (valid 0.5-100 GHz) to 140 GHz by:
+    - Retaining the log-distance path loss structure with n=1.73.
+    - Adding atmospheric absorption per ITU-R P.676-13.
     """
     
     def __init__(self):

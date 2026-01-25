@@ -131,14 +131,14 @@ Based on **3GPP TR 38.901 Indoor Factory (InF)** model adapted for sub-THz.
 
 ### Path Loss Model
 
-$$PL_{dB} = 32.4 + 20 \log_{10}(f_c [GHz]) + 17.3 \log_{10}(d [m]) + X_\sigma + \alpha_{atm} \cdot d$$
+$$PL_{dB} = 32.4 + 20 \log_{10}(f_c [GHz]) + 21.5 \log_{10}(d [m]) + X_\sigma + \alpha_{atm} \cdot d$$
 
 Where:
 - **f_c** = 140 GHz (carrier frequency)
 - **d** = 3D distance in meters
 - **X_σ** = Shadow fading ~ N(0, 4 dB)
 - **α_atm** = 10 dB/km (atmospheric absorption at 140 GHz)
-- Path loss exponent = 1.73 (InF-SL LoS)
+- Path loss exponent = 2.15 (InF-SL LoS 3GPP TR 38.901 Standard)
 
 ### Received Power
 
@@ -435,7 +435,7 @@ python main.py --no-viz --duration 60
 | Quantity | Formula |
 |----------|---------|
 | Range Resolution | Δr = c / (2B) |
-| Path Loss (dB) | PL = 32.4 + 20log(f_GHz) + 17.3log(d) |
+| Path Loss (dB) | PL = 32.4 + 20log(f_GHz) + 21.5log(d) |
 | Radar SNR | SNR = (Pt·G²·λ²·σ) / ((4π)³·R⁴·Pn) |
 | Shannon Capacity | C = B·log₂(1 + SNR) |
 | Range CRLB | σ_r = c / (2B√(2·SNR)) |

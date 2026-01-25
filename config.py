@@ -86,9 +86,9 @@ AGV_INITIAL_POSITIONS = [
 # =============================================================================
 # CHANNEL MODEL PARAMETERS (3GPP Indoor Factory - LoS)
 # =============================================================================
-PATH_LOSS_EXPONENT = 1.73        # InF-SL (sparse clutter, LOS)
+PATH_LOSS_EXPONENT = 2.15        # InF-SL (3GPP TR 38.901 standard, LOS)
 SHADOW_FADING_STD_DB = 4.0       # dB
-ATMOSPHERIC_ABSORPTION_DB_PER_KM = 10.0  # at 140 GHz
+ATMOSPHERIC_ABSORPTION_DB_PER_KM = 2.0  # ITU-R P.676-13 at 140 GHz, standard atmosphere
 
 # Multipath Parameters
 NUM_MULTIPATH_CLUSTERS = 3
