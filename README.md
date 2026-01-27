@@ -1,4 +1,4 @@
-# 6G ISAC Factory Floor Simulation
+# 6G ISAC Factory Floor Simulation - Complete Walkthrough
 
 A comprehensive simulation of Integrated Sensing and Communication (ISAC) for autonomous factory floor operations using 6G sub-THz wireless technology.
 
@@ -218,6 +218,39 @@ AGVs navigate between waypoints defined on the factory floor:
 ---
 
 ## Localization System
+
+### Process Data Flow
+
+The localization process follows a cycle from physical ground truth to estimated state.
+
+```mermaid
+sequenceDiagram
+    participant World as Factory (True State)
+    participant Channel as Channel Model
+    participant Sensor as ToA/AoA Estimator
+    participant EKF as Extended Kalman Filter
+    
+    Note over World, Channel: 1. Physics (Ground Truth)
+    World->>Channel: AGV Position (x,y,z)
+    Channel->>Channel: Calculate True Range & Angles
+    Channel->>Channel: Calculate Radar SNR (using RCS)
+    
+    Note over Channel, Sensor: 2. Sensing (Measurement)
+    Channel->>Sensor: True Values + SNR
+    Sensor->>Sensor: Calculate CRLB (Noise Standard Deviation)
+    Sensor->>Sensor: Add Gaussian Noise to Range & Angles
+    
+    Note over Sensor, EKF: 3. Tracking (Estimation)
+    Sensor->>EKF: Noisy Measurements (Range, Azimuth)
+    EKF->>EKF: Predict: x(t) = F * x(t-1)
+    EKF->>EKF: Update: Correct with Measurements
+    EKF->>World: Estimated Position (x,y)
+```
+
+1. **True State Generation**: The `FactoryEnvironment` updates the true physics of the AGV.
+2. **Channel Physics**: `ChannelModel` calculates the Signal-to-Noise Ratio (SNR) based on the radar equation (distance, reflectivity, transmit power).
+3. **Measurement Generation**: `ToAAoAEstimator` uses the SNR to calculate the *theoretical* best precision (Cramer-Rao Lower Bound). It then adds random noise based on this precision to the true values to simulate a real sensor reading.
+4. **State Estimation**: The `ExtendedKalmanFilter` takes these noisy spherical measurements (Range, Angle), converts them to a Cartesian update, and fuses them with a motion model to produce a smooth, accurate position estimate.
 
 ### ToA/AoA Estimation
 
