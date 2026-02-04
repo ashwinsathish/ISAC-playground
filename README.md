@@ -40,36 +40,7 @@ The simulation uses **140 GHz** carrier frequency (sub-THz band) because:
 
 ---
 
-## System Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    6G Base Station                          │
-│              (Center of Ceiling, 8m height)                 │
-│                                                             │
-│   ┌─────────┐    ┌─────────┐    ┌─────────────────┐        │
-│   │ Massive │    │  OFDM   │    │   Beamforming   │        │
-│   │  MIMO   │◄──►│Waveform │◄──►│   Controller    │        │
-│   │ 64×64   │    │Generator│    │                 │        │
-│   └─────────┘    └─────────┘    └─────────────────┘        │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-                          ▼ Wireless Channel
-┌─────────────────────────────────────────────────────────────┐
-│                    Factory Floor (50m × 30m)                │
-│                                                             │
-│   ┌─────┐              ┌─────┐              ┌─────┐        │
-│   │Rack1│              │     │              │Rack2│        │
-│   └─────┘              │     │              └─────┘        │
-│                   AGV ◄┘     └► AGV                        │
-│   ┌─────┐       ▲      ▼       ▲   ▼        ┌─────┐        │
-│   │Rack3│       │     AGV      │            │Rack4│        │
-│   └─────┘       │              │            └─────┘        │
-│              Waypoints      Waypoints                      │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Key Components
+## Key Components
 
 | Component | File | Purpose |
 |-----------|------|---------|
